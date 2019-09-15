@@ -1,2 +1,2 @@
-# GBAY
-MySQL &amp; Node.js based bidding/auctioning application
+# bamazon
+MySQL &amp; Node.js based buying and selling application
