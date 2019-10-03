@@ -5,12 +5,13 @@ const Table = require("cli-table2")
 
 // Save terminal output method as a variable
 const log = (console.log);
+require("dotenv").config();
 
 // Create connection to mySQL
 const connection = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "1tylerfly",
+    password: process.env.DB_PASSWORD,
     database: "bamazon",
     port: 3306
 });
@@ -40,7 +41,7 @@ let ShowInventory = function () {
         log("***********See our current inventory below************"); 
         log(""); 
 
-        // Instantiate cli table 2
+    // Instantiate cli table 2
     let table = new Table({
         head: ["Product ID", "Name", "Department", "Price", "In Stock"], 
         colWidths: [8, 20, 20, 8, 8], 
