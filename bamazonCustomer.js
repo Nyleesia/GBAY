@@ -10,7 +10,7 @@ const log = (console.log);
 const connection = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "1tylerfly",
+    password: "",
     database: "bamazon",
     port: 3306
 });
