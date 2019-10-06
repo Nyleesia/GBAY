@@ -1,3 +1,4 @@
+  
 // Get dependencies
 const inquirer = require("inquirer");
 const mysql = require("mysql");
@@ -19,19 +20,22 @@ const connection = mysql.createConnection({
 // Connect to the mysql server and database
 connection.connect((err, connected) => {
     if (err){
-        log(`Connecting to inventory database...`)
+        log(err);
+        log("Connecting to inventory database...");
         log("There was an error connecting to the database")
     }
     else{
-        log(`Connecting to inventory database...`)
-        log(`Connection: Successful!`)
+        log(connected);
+        log("Connecting to inventory database...");
+        log("Connection: Successful!");
     }
 });
 
 // Show the user the inventory listing so they see what is available
-let ShowInventory = function () {
-    connection.query("SELECT * FROM products", function(err, data ) {
+let ShowInventory =  () => {
+    connection.query("SELECT * FROM products", (err, data ) => {
         if (err){
+            log(err);
             log(`Oops! Something has gone wrong here. Please try connecting later.`)
         }
         log("******************************************************");
@@ -58,6 +62,66 @@ let ShowInventory = function () {
 
     log(table.toString()); 
     log("******************************************************");
+
+    shopNow();
     });
 }; 
-ShowInventory()
+
+const shopNow = () => {
+    inquirer
+    .prompt({
+        name : "addToCart", 
+        type : "input", 
+        message : " Enter the id of the product you want to add to your cart"
+    }).then ((productChoice) => {
+        let selected = productChoice.addToCart; 
+        connection.query ("SELECT * FROM products WHERE item_id = ?", selected, (err, res) => {
+            if (err) throw err; 
+            if (res.length === 0) {
+                log("Sorry, that product is not in our current inventory! Try another by consulting our inventory table, or come back later, when it might be in stock.");
+            
+            shopNow(); 
+            }
+            else {
+                inquirer
+                .prompt({
+                  name: "quantity",
+                  type: "input",
+                  message: "How many items would you like to add to your cart?"
+                }).then ((selectQty) => {
+                    let quantity = selectQty.quantity; 
+                    if (quantity > res[0].stock_quantity) {
+                        log(`Oops! Unfortunately, we only have ${res[0].stock_quantity} of these remaining.`);
+                        shopNow();
+                    } 
+                    else {
+                        log("");
+                        log(`Congratulations ${quantity} ${res[0].product_name} have been added to your cart`);
+                        log("******************************************************");
+                        log(`Order: ${quantity} ${res[0].product_name} @ $${res[0].price} each`);
+                        log("------------------------------------------------------");
+                        log(`Total Cost=  $` + res[0].price * quantity);
+                        log("------------------------------------------------------");
+                        
+                        let newQty = res[0].stock_quantity - quantity;
+
+                        connection.query(
+                        "UPDATE products SET stock_quantity = " + newQty + " WHERE item_id = " + res[0].item_id, (err, resUpdate) => {
+                            if (err) throw err;
+                            log("");
+                            log(`Your Order has been Processed...`);
+                            log(`Thank you for supporting Bamazon!`);
+                            log(``);
+                            log("******************************************************");
+                            log(``);
+                            connection.end();
+                        });
+                    }
+                });
+            }
+        });
+    });
+};
+
+// Execute fx to show inventory
+ShowInventory();

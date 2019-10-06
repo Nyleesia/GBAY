@@ -46,12 +46,27 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("lipstick", "beauty", 9.00, 50); 
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("biscuity pets", "pet supplies", 5.00, 90); 
+VALUES ("biscutey", "pet supplies", 5.00, 90); 
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("dog crates", "pet supplies", 50.00, 20); 
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("aquariums", "pet supplies", 75.00, 15);
+
+INSERT INTO products (product_name, department_name, price, stock_quantity)
+VALUES ("throw pillows", "home supplies", 10.00, 50);
+
+INSERT INTO products (product_name, department_name, price, stock_quantity)
+VALUES ("santoku knives", "kitchen", 95.00, 30);
+
+INSERT INTO products (product_name, department_name, price, stock_quantity)
+VALUES ("weighted blankets", "bedding", 100.00, 50);
+
+INSERT INTO products (product_name, department_name, price, stock_quantity)
+VALUES ("aluminium straws", "kitchen", 5.00, 300);
+
+INSERT INTO products (product_name, department_name, price, stock_quantity)
+VALUES ("picture frames", "home supplies", 5.00, 500);
 
 SELECT * FROM products; 
