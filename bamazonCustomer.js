@@ -2,7 +2,7 @@
 // Get dependencies
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-const Table = require("cli-table2")
+const Table = require("cli-table2");
 
 // Save terminal output method as a variable
 const log = (console.log);
@@ -17,7 +17,7 @@ const connection = mysql.createConnection({
     port: 3306
 });
 
-// Connect to the mysql server and database
+// Connect to the mysql database
 connection.connect((err, connected) => {
     if (err){
         log(err);
@@ -32,7 +32,7 @@ connection.connect((err, connected) => {
 });
 
 // Show the user the inventory listing so they see what is available
-let ShowInventory =  () => {
+const ShowInventory =  () => {
     connection.query("SELECT * FROM products", (err, data ) => {
         if (err){
             log(err);
@@ -51,13 +51,18 @@ let ShowInventory =  () => {
         colWidths: [8, 20, 20, 8, 8], 
         colAligns: ["center", "left", "left", "center", "center"], 
         style: {
-            head: ["aqua"], 
+            head: ["purple"], 
             compact: true
         } 
     });
 
     for (var i = 0; i < data.length; i++) {
-        table.push([data[i].item_id, data[i].product_name, data[i].department_name, data[i].price, data[i].stock_quantity]);
+        table.push([
+            data[i].item_id, 
+            data[i].product_name, 
+            data[i].department_name, 
+            data[i].price, 
+            data[i].stock_quantity]);
     }
 
     log(table.toString()); 
